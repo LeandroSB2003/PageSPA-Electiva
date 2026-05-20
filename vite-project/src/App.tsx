@@ -1,10 +1,14 @@
-import "./styles.css";
+import { GameProvider } from "./context/Contexto";
+import { AppRouter } from "./routers/Rutas";
+import "./App.css";
+import Fondo from "./Fondo/Fondo";
 
-export default function App() {
+function App() {
   return (
-    <div className="App">
-      <h1>Hello CodeSandbox</h1>
-      <h2>Start editing to see some magic happen!</h2>
-    </div>
+    <GameProvider>
+      <AppRouter />
+    </GameProvider>
   );
 }
+
+export default App;
