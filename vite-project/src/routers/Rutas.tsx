@@ -4,7 +4,6 @@ import GameView from "../features/game/views/PantallaJuego";
 import ResultView from "../features/game/views/PantallaResultado";
 import LoginView from "../features/game/views/auth/login";
 
-
 const router = createBrowserRouter([
   { path: "/", element: <WelcomeView /> },
   { path: "/game", element: <GameView /> },

@@ -1,6 +1,8 @@
 import React from "react";
 import { useState } from "react";
 import { signin } from "../../../../firebase/authProvider";
+import WelcomView from "../PantallaInicio"
+import { useNavigate, useNavigation } from "react-router-dom";
 
 const LoginView: React.FC = () => {
 
@@ -8,6 +10,8 @@ const LoginView: React.FC = () => {
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const [errorMessage, setErrorMessage] = useState('')
+    const navegacion= useNavigate();
+
 
   const handleChangeUser = (text: string) => {
         setUser(text);
@@ -27,6 +31,7 @@ const LoginView: React.FC = () => {
         const response = await signin(user, password)
         if(response.ok){
             console.log("LOGUEADO")
+            navegacion("/")
         }
       }
 
