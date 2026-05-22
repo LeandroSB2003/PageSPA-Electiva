@@ -1,61 +1,62 @@
 import React from "react";
 import { useState } from "react";
 import { signin } from "../../../../firebase/authProvider";
-import WelcomView from "../PantallaInicio"
-import { useNavigate, useNavigation } from "react-router-dom";
+import WelcomView from "../PantallaInicio";
+import { useNavigate } from "react-router-dom";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 const LoginView: React.FC = () => {
 
-    const diccionarioErrores = {
-        "Firebase: Error (auth/email-already-in-use).": "Este correo electrónico ya está registrado.",
-  "Firebase: Error (auth/weak-password).": "La contraseña debe tener al menos 6 caracteres.",
-  "Firebase: Error (auth/invalid-email).": "El formato del correo electrónico no es válido.",
-  "Firebase: Error (auth/user-not-found).": "No existe ninguna cuenta con este correo.",
-  "Firebase: Error (auth/wrong-password).": "La contraseña es incorrecta.",
-  "Firebase: Error (auth/invalid-credential).": "El correo o contraseña es incorrecta."}
+  const diccionarioErrores = {
+    "Firebase: Error (auth/email-already-in-use).": "Este correo electrónico ya está registrado.",
+    "Firebase: Error (auth/weak-password).": "La contraseña debe tener al menos 6 caracteres.",
+    "Firebase: Error (auth/invalid-email).": "El formato del correo electrónico no es válido.",
+    "Firebase: Error (auth/user-not-found).": "No existe ninguna cuenta con este correo.",
+    "Firebase: Error (auth/wrong-password).": "La contraseña es incorrecta.",
+    "Firebase: Error (auth/invalid-credential).": "El correo o contraseña es incorrecta."
+  };
 
-    const [user, setUser] = useState('')
-    const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
-    const [errorMessage, setErrorMessage] = useState('')
-    const navegacion= useNavigate();
-
+  const [user, setUser] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const navegacion = useNavigate();
 
   const handleChangeUser = (text: string) => {
-        setUser(text);
-        const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
-        setErrorMessage(isValid ? "" : "Formato de correo inválido");
-        setError(isValid ? 'false' : 'true')
-      };
-    
-      const handleChangePassword = (text: string) => {
-        setPassword(text);
-        const isValid = text.length >= 6;
-        setErrorMessage(isValid ? "" : 'Formato de contraseña invalido');
-        setError(isValid ? 'false' : 'true')
-      };
+    setUser(text);
+    const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
+    setErrorMessage(isValid ? "" : "Formato de correo inválido");
+    setError(isValid ? 'false' : 'true');
+  };
 
-      const handleLogin= async () => {
-        try {
-            const response = await signin(user, password)
-            if(response.ok){
-                console.log("LOGUEADO")
-                console.log(response.photoURL)
-                navegacion("/")
-            }
-            else{
-                const res= response.errorMessage;
-                const respuesta= diccionarioErrores[res as keyof typeof diccionarioErrores] || "Algo no parece estar funcionando bien.";
-                console.log(respuesta)
-            }
-        } catch (error: any) {
-            console.log("ERROR")
-            console.log(error.message)
-        }
+  const handleChangePassword = (text: string) => {
+    setPassword(text);
+    const isValid = text.length >= 6;
+    setErrorMessage(isValid ? "" : 'Formato de contraseña invalido');
+    setError(isValid ? 'false' : 'true');
+  };
+
+  const handleLogin = async () => {
+    try {
+      const response = await signin(user, password);
+      if (response.ok) {
+        console.log("LOGUEADO");
+        console.log(response.photoURL);
+        navegacion("/");
+      } else {
+        const res = response.errorMessage;
+        setError('true')
+        setErrorMessage(diccionarioErrores[res as keyof typeof diccionarioErrores] || "Algo no parece estar funcionando bien.");
       }
+    } catch (error: any) {
+      console.log("ERROR");
+      console.log(error.message);
+    }
+  };
 
   return (
-     <div style={styles.container}>
+    <div style={styles.container}>
       <div style={styles.card}>
         <h1 style={styles.title}>Login</h1>
 
@@ -85,7 +86,7 @@ const LoginView: React.FC = () => {
 
         <p style={styles.registerText}>
           ¿No estas registrado?{" "}
-          <span style={styles.registerLink} onClick={()=>navegacion("/register")}>
+          <span style={styles.registerLink} onClick={() => navegacion("/register")}>
             Haz Click
           </span>
         </p>
