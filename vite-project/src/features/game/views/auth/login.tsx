@@ -1,0 +1,142 @@
+import React from "react";
+import { useState } from "react";
+import { signin } from "../../../../firebase/authProvider";
+
+const LoginView: React.FC = () => {
+
+    const [user, setUser] = useState('')
+    const [password, setPassword] = useState('')
+    const [error, setError] = useState('')
+    const [errorMessage, setErrorMessage] = useState('')
+
+  const handleChangeUser = (text: string) => {
+        setUser(text);
+        const isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
+        setErrorMessage(isValid ? 'true' : 'Formato de correo inválido');
+        setError(isValid ? 'false' : 'true')
+      };
+    
+      const handleChangePassword = (text: string) => {
+        setPassword(text);
+        const isValid = text.length >= 6;
+        setErrorMessage(isValid ? 'true' : 'Formato de contraseña invalido');
+        setError(isValid ? 'false' : 'true')
+      };
+
+      const handleLogin= async () => {
+        const response = await signin(user, password)
+        if(response.ok){
+            console.log("LOGUEADO")
+        }
+      }
+
+  return (
+     <div style={styles.container}>
+      <div style={styles.card}>
+        <h1 style={styles.title}>Login</h1>
+
+        <input
+          type="email"
+          placeholder="Correo electrónico"
+          value={user}
+          onChange={(e) => handleChangeUser(e.target.value)}
+          style={styles.input}
+        />
+
+        <input
+          type="password"
+          placeholder="Contraseña"
+          value={password}
+          onChange={(e) => handleChangePassword(e.target.value)}
+          style={styles.input}
+        />
+
+        {errorMessage && (
+          <p style={styles.error}>{errorMessage}</p>
+        )}
+
+        <button style={styles.button} onClick={handleLogin}>
+          Iniciar sesión
+        </button>
+
+        <p style={styles.registerText}>
+          ¿No estas registrado?{" "}
+          <span style={styles.registerLink}>
+            Haz Click
+          </span>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+const styles: { [key: string]: React.CSSProperties } = {
+  container: {
+    width: "100%",
+    height: "100vh",
+    backgroundColor: "#0a0a0a",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    fontFamily: "Arial, sans-serif",
+  },
+
+  card: {
+    width: "350px",
+    backgroundColor: "#111111",
+    padding: "40px",
+    borderRadius: "16px",
+    display: "flex",
+    flexDirection: "column",
+    gap: "16px",
+    boxShadow: "0 0 20px rgba(255,255,255,0.05)",
+    border: "1px solid #222",
+  },
+
+  title: {
+    color: "#ffffff",
+    textAlign: "center",
+    marginBottom: "10px",
+  },
+
+  input: {
+    backgroundColor: "#1a1a1a",
+    border: "1px solid #333",
+    borderRadius: "10px",
+    padding: "14px",
+    color: "#fff",
+    fontSize: "14px",
+    outline: "none",
+  },
+
+  button: {
+    backgroundColor: "#ffffff",
+    color: "#000000",
+    border: "none",
+    borderRadius: "10px",
+    padding: "14px",
+    fontWeight: "bold",
+    cursor: "pointer",
+    transition: "0.2s",
+  },
+
+  error: {
+    color: "#b0b0b0",
+    fontSize: "13px",
+    margin: 0,
+  },
+
+  registerText: {
+    color: "#888",
+    textAlign: "center",
+    fontSize: "14px",
+  },
+
+  registerLink: {
+    color: "#fff",
+    cursor: "pointer",
+    fontWeight: "bold",
+  },
+};
+
+export default LoginView;
