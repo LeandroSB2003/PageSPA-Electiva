@@ -1,20 +1,20 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useGame } from "../../../hooks/EnJuego";
-import Board from "../../board/components/Tablero";
+import { EnJuego } from "../../../hooks/EnJuego";
+import Tablero from "../../board/components/Tablero";
 import PlayerStatus from "../../players/components/EstadoJugador";
 import Fondo from "../../../Fondo/FondoJuego";
 import "./PantallaJuego.css";
 
 const GameView: React.FC = () => {
-  const { winner, isDraw } = useGame();
-  const navigate = useNavigate();
+  const { ganador, dibujando } = EnJuego();
+  const navegar = useNavigate();
 
   useEffect(() => {
-    if (winner || isDraw) {
-      navigate("/result");
+    if (ganador || dibujando) {
+      navegar("/resultado");
     }
-  }, [winner, isDraw, navigate]);
+  }, [ganador, dibujando, navegar]);
 
   return (
     <div
@@ -27,7 +27,7 @@ const GameView: React.FC = () => {
       }}
     >
       <PlayerStatus />
-      <Board />
+      <Tablero />
       <Fondo />;
     </div>
   );

@@ -1,14 +1,14 @@
 import React from "react";
-import { useGame } from "../../../hooks/EnJuego";
+import { EnJuego } from "../../../hooks/EnJuego";
 
 export const EstadoJugador: React.FC = () => {
-  const { turn } = useGame();
+  const { turno } = EnJuego();
 
   return (
     <h2 style={{ color: "white", marginTop: "1%",}}>
       Turno del Jugador: {" "}
-      <span style={{ color: turn === "X" ? "#55adff" : "#ff6969" }}>
-        {turn}
+      <span style={{ color: turno === "X" ? "#55adff" : "#ff6969" }}>
+        {turno}
       </span>
     </h2>
   );

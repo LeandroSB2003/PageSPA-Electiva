@@ -1,16 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import Fondo from "../../../Fondo/Fondo";
-import { useGame } from "../../../hooks/EnJuego";
+import { EnJuego } from "../../../hooks/EnJuego";
 import "./PantallaInicio.css";
 
-const WelcomeView: React.FC = () => {
-  const navigate = useNavigate();
-  const { resetGame } = useGame();
+const PantallaInicio: React.FC = () => {
+  const navegar = useNavigate();
+  const { reiniciar } = EnJuego();
 
-  const handleStart = () => {
-    resetGame();
-    navigate("/game");
+  const TInicio = () => {
+    reiniciar();
+    navegar("/juego");
   };
 
 
@@ -25,7 +25,7 @@ const WelcomeView: React.FC = () => {
         Tic Tac Toe
       </h1>
       <button
-        onClick={handleStart}
+        onClick={TInicio}
         className="bn3"
         style={{ marginTop: "10%" }}
       >
@@ -57,4 +57,4 @@ const WelcomeView: React.FC = () => {
   );
 };
 
-export default WelcomeView;
+export default PantallaInicio;

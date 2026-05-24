@@ -1,38 +1,38 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { useGame } from "../../../hooks/EnJuego";
+import { EnJuego } from "../../../hooks/EnJuego";
 import Fondo from "../../../Fondo/FondoFinal";
 import "./PantallaResultado.css";
 
 
 const PantallaResultado: React.FC = () => {
-  const { winner, isDraw, resetGame } = useGame();
-  const navigate = useNavigate();
+  const { ganador, dibujando, reiniciar } = EnJuego();
+  const navegar = useNavigate();
 
-  const handlePlayAgain = () => {
-    resetGame(); // Reinicia el estado global [cite: 102]
-    navigate("/game");
+  const ManejarDeNuevo = () => {
+    reiniciar();
+    navegar("/juego");
   };
 
   return (
     <div style={{ textAlign: "center", marginTop: "10%" }}>
       <h1 style={{color:"white",padding: "10px 20px" }}>Fin de la Partida</h1>
-      {winner && (
+      {ganador && (
         <h2 style={{ color: "#38a169",padding: "10px 20px" }}>
           Gano el jugador
         </h2>
-      )} <h1 style={{ color: "#f6ff41" }}>{winner}</h1>
-      {isDraw && <h2 style={{ color: "#dd6b20" }}>Empate</h2>}
+      )} <h1 style={{ color: "#f6ff41" }}>{ganador}</h1>
+      {dibujando && <h2 style={{ color: "#dd6b20" }}>Empate</h2>}
 
-      <div style={{ marginTop: "380px",  marginLeft: "-1000px"  }}>
+      <div style={{ marginTop: "300px",  marginLeft: "-1000px"  }}>
         <button
           className="bn3"
-          onClick={handlePlayAgain}
+          onClick={ManejarDeNuevo}
           style={{ padding: "10px 20px", marginRight: "35px" }}
         >
           Jugar Otra Vez
         </button>
-        <button className="bn3" onClick={() => navigate("/")} style={{ padding: "10px 20px" }}>
+        <button className="bn3" onClick={() => navegar("/")} style={{ padding: "10px 20px" }}>
           Volver al Inicio
         </button>
       </div>

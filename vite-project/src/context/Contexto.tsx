@@ -1,52 +1,52 @@
 import React, { createContext, useState } from "react";
 import type { ReactNode } from "react";
-import { checkWinner } from "../utils/Utilidades";
-import type { BoardState } from "../utils/Utilidades";
+import { RevisarGanador } from "../utils/Utilidades";
+import type { EstadoTablero } from "../utils/Utilidades";
 
-interface GameContextType {
-  board: BoardState;
-  turn: "X" | "O";
-  winner: string | null;
-  isDraw: boolean;
-  playTurn: (index: number) => void;
-  resetGame: () => void;
+interface ContextoDeJuego {
+  tablero: EstadoTablero;
+  turno: "X" | "O";
+  ganador: string | null;
+  dibujando: boolean;
+  JugarTurno: (index: number) => void;
+  reiniciar: () => void;
 }
 
-export const GameContext = createContext<GameContextType | undefined>(
+export const ContextoJuego = createContext<ContextoDeJuego | undefined>(
   undefined
 );
 
 export const GameProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [board, setBoard] = useState<BoardState>(Array(9).fill(null));
-  const [turn, setTurn] = useState<"X" | "O">("X");
+  const [tablero, setTablero] = useState<EstadoTablero>(Array(9).fill(null));
+  const [turno, setTurno] = useState<"X" | "O">("X");
 
-  const winner = checkWinner(board);
-  const isDraw = !winner && board.every((cell) => cell !== null);
+  const ganador = RevisarGanador(tablero);
+  const dibujando = !ganador && tablero.every((cell) => cell !== null);
 
-  const playTurn = (index: number) => {
-    if (board[index] || winner) return;
+  const JugarTurno = (index: number) => {
+    if (tablero[index] || ganador) return;
 
-    const newBoard = [...board];
-    newBoard[index] = turn;
-    setBoard(newBoard);
+    const TableroNuevo = [...tablero];
+    TableroNuevo[index] = turno;
+    setTablero(TableroNuevo);
 
-    if (!checkWinner(newBoard)) {
-      setTurn(turn === "X" ? "O" : "X");
+    if (!RevisarGanador(TableroNuevo)) {
+      setTurno(turno === "X" ? "O" : "X");
     }
   };
 
-  const resetGame = () => {
-    setBoard(Array(9).fill(null));
-    setTurn("X");
+  const reiniciar = () => {
+    setTablero(Array(9).fill(null));
+    setTurno("X");
   };
 
   return (
-    <GameContext.Provider
-      value={{ board, turn, winner, isDraw, playTurn, resetGame }}
+    <ContextoJuego.Provider
+      value={{ tablero, turno, ganador, dibujando, JugarTurno, reiniciar }}
     >
       {children}
-    </GameContext.Provider>
+    </ContextoJuego.Provider>
   );
 };

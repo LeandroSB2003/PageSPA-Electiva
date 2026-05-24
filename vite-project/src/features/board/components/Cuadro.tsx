@@ -1,11 +1,11 @@
 import React from "react";
 
-interface SquareProps {
+interface CuadradoA {
   value: string | null;
   onClick: () => void;
 }
 
-export const Cuadro: React.FC<SquareProps> = ({ value, onClick }) => {
+export const Cuadro: React.FC<CuadradoA> = ({ value, onClick }) => {
   return (
     <button
       onClick={onClick}

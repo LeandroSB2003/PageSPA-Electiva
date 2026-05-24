@@ -1,9 +1,9 @@
 import React from "react";
-import { useGame } from "../../../hooks/EnJuego";
-import Square from "./Cuadro";
+import { EnJuego } from "../../../hooks/EnJuego";
+import Cuadrado from "./Cuadro";
 
 export const Tablero: React.FC = () => {
-  const { board, playTurn } = useGame();
+  const { tablero, JugarTurno } = EnJuego();
 
   return (
     <div
@@ -15,8 +15,8 @@ export const Tablero: React.FC = () => {
         marginTop: "20px",
       }}
     >
-      {board.map((value, index) => (
-        <Square key={index} value={value} onClick={() => playTurn(index)} />
+      {tablero.map((value, index) => (
+        <Cuadrado key={index} value={value} onClick={() => JugarTurno(index)} />
       ))}
     </div>
   );
