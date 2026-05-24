@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { EnJuego } from "../../../hooks/EnJuego";
 import Tablero from "../../board/components/Tablero";
-import PlayerStatus from "../../players/components/EstadoJugador";
+import EstadoJugador from "../../players/components/EstadoJugador";
 import Fondo from "../../../Fondo/FondoJuego";
 import "./PantallaJuego.css";
 
@@ -26,7 +26,7 @@ const GameView: React.FC = () => {
         boxShadow: "10px 0px 40px rgb(56, 56, 56)",
       }}
     >
-      <PlayerStatus />
+      <EstadoJugador />
       <Tablero />
       <Fondo />;
     </div>

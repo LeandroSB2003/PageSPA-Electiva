@@ -13,7 +13,6 @@ const PantallaInicio: React.FC = () => {
     navegar("/juego");
   };
 
-
   return (
     <div style={{ textAlign: "center", marginTop: "10%" }}>
       <h1
@@ -22,6 +21,7 @@ const PantallaInicio: React.FC = () => {
           textAlign: "center",
         }}
       >
+
         Tic Tac Toe
       </h1>
       <button

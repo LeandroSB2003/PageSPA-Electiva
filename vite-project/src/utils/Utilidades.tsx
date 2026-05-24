@@ -1,6 +1,6 @@
 export type EstadoTablero = (string | null)[];
 
-export const RevisarGanador = (board: EstadoTablero): string | null => {
+export const RevisarGanador = (tablero: EstadoTablero): string | null => {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
@@ -13,8 +13,8 @@ export const RevisarGanador = (board: EstadoTablero): string | null => {
   ];
 
   for (const [a, b, c] of lines) {
-    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
-      return board[a];
+    if (tablero[a] && tablero[a] === tablero[b] && tablero[a] === tablero[c]) {
+      return tablero[a];
     }
   }
   return null;

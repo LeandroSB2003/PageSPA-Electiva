@@ -16,7 +16,7 @@ export const ContextoJuego = createContext<ContextoDeJuego | undefined>(
   undefined
 );
 
-export const GameProvider: React.FC<{ children: ReactNode }> = ({
+export const Proveedor: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [tablero, setTablero] = useState<EstadoTablero>(Array(9).fill(null));
