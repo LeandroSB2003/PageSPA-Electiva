@@ -1,91 +1,82 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import avatar1 from "../../../../assets/avatars/avatar_1.png";
 import avatar2 from "../../../../assets/avatars/avatar_2.png";
 import avatar3 from "../../../../assets/avatars/avatar_3.png";
+
 import { register } from "../../../../firebase/authProvider";
-
-/* =========================
-   FIREBASE (COMENTADO)
-   NO SE EJECUTA POR AHORA
-========================= */
-
-/*
-import {
-  createUserWithEmailAndPassword,
-  updateProfile,
-} from "firebase/auth";
-
-import { auth } from "../../../../firebase/firebaseConfig";
-
-import {
-  doc,
-  getFirestore,
-  setDoc,
-} from "firebase/firestore";
-*/
+import { useLoginValidation } from "../../../../hooks/ValidateInput";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
 
   const avatars = [avatar1, avatar2, avatar3];
-  const [selectedAvatar, setSelectedAvatar] = useState(avatars[0]);
+
+  const [selectedAvatar, setSelectedAvatar] = useState(
+    avatars[0]
+  );
 
   const navigate = useNavigate();
 
-  const handleRegister = async () => {
-    setError(false);
-    setErrorMessage("");
-
-    if (!name || !user || !password) {
-      setError(true);
-      setErrorMessage("Todos los campos son obligatorios");
-      return;
-    }
-
-    try{
-        const response = await register(name, user, password, selectedAvatar)
-      console.log("REGISTRO SIMULADO ✔");
-      console.log(selectedAvatar)
-
-      navigate("/login");
-
-    } catch (error: any) {
-      setError(true);
-      console.log(error.message)
-      setErrorMessage(error.message);
-    }
-  };
+  const {
+    errorMessage,
+    hasError,
+    validateEmail,
+    validatePassword,
+    setErrorMessage,
+    setHasError,
+  } = useLoginValidation();
 
   const handleChangeUser = (text: string) => {
     setUser(text);
-
-    const isValid =
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
-
-    setEmailError(
-      isValid ? "" : "Formato de correo inválido"
-    );
+    validateEmail(text);
   };
 
   const handleChangePassword = (text: string) => {
     setPassword(text);
-
-    const isValid = text.length >= 6;
-
-    setPasswordError(
-      isValid
-        ? ""
-        : "La contraseña debe contener mínimo 6 caracteres"
-    );
+    validatePassword(text);
   };
 
+  const handleRegister = async () => {
+    setHasError(false);
+    setErrorMessage("");
+
+    if (!name || !user || !password) {
+      setHasError(true);
+      setErrorMessage(
+        "Todos los campos son obligatorios"
+      );
+      return;
+    }
+
+    const emailValid = validateEmail(user);
+    const passwordValid =
+      validatePassword(password);
+
+    if (!emailValid || !passwordValid) return;
+
+    try {
+      const response = await register(
+        name,
+        user,
+        password,
+        selectedAvatar
+      );
+
+      console.log("REGISTRO");
+      console.log(response);
+
+      navigate("/login");
+    } catch (error: any) {
+      console.log(error.message);
+
+      setHasError(true);
+      setErrorMessage(error.message);
+    }
+  };
 
   return (
     <div style={styles.container}>
@@ -100,7 +91,12 @@ const Register = () => {
             onChange={(e) =>
               setName(e.target.value)
             }
-            style={styles.input}
+            style={{
+              ...styles.input,
+              border: hasError
+                ? "1px solid #ff4d4d"
+                : styles.input.border,
+            }}
           />
         </div>
 
@@ -112,14 +108,13 @@ const Register = () => {
             onChange={(e) =>
               handleChangeUser(e.target.value)
             }
-            style={styles.input}
+            style={{
+              ...styles.input,
+              border: hasError
+                ? "1px solid #ff4d4d"
+                : styles.input.border,
+            }}
           />
-
-          {emailError && (
-            <p style={styles.errorText}>
-              {emailError}
-            </p>
-          )}
         </div>
 
         <div style={styles.inputContainer}>
@@ -128,45 +123,57 @@ const Register = () => {
             placeholder="Contraseña"
             value={password}
             onChange={(e) =>
-              handleChangePassword(e.target.value)
+              handleChangePassword(
+                e.target.value
+              )
             }
-            style={styles.input}
+            style={{
+              ...styles.input,
+              border: hasError
+                ? "1px solid #ff4d4d"
+                : styles.input.border,
+            }}
           />
-
-          {passwordError && (
-            <p style={styles.errorText}>
-              {passwordError}
-            </p>
-          )}
         </div>
 
-        {error && (
+        {errorMessage && (
           <p style={styles.errorText}>
             {errorMessage}
           </p>
         )}
+
         <span style={styles.loginText}>
-            Selecciona tu Avatar
-          </span>
-        <div style={{ display: "flex", justifyContent: "center", gap: "10px", width: "100%" }}>
-  {avatars.map((img, index) => (
-    <img
-      key={index}
-      src={img}
-      onClick={() => setSelectedAvatar(img)}
-      style={{
-        width: 100,
-        height: 100,
-        borderRadius: "50%",
-        border:
-          selectedAvatar === img
-            ? "2px solid white"
-            : "2px solid transparent",
-        cursor: "pointer",
-      }}
-    />
-  ))}
-</div>
+          Selecciona tu Avatar
+        </span>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "10px",
+            width: "100%",
+          }}
+        >
+          {avatars.map((img, index) => (
+            <img
+              key={index}
+              src={img}
+              onClick={() =>
+                setSelectedAvatar(img)
+              }
+              style={{
+                width: 100,
+                height: 100,
+                borderRadius: "50%",
+                border:
+                  selectedAvatar === img
+                    ? "2px solid white"
+                    : "2px solid transparent",
+                cursor: "pointer",
+              }}
+            />
+          ))}
+        </div>
 
         <button
           style={styles.button}
@@ -259,9 +266,10 @@ const styles: {
   },
 
   errorText: {
-    color: "#9e9e9e",
+    color: "#ff4d4d",
     fontSize: "13px",
     margin: 0,
+    textAlign: "center",
   },
 
   loginContainer: {
@@ -276,5 +284,6 @@ const styles: {
     fontWeight: "bold",
     cursor: "pointer",
     marginLeft: "5px",
+    textAlign: "center",
   },
 };

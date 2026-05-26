@@ -22,7 +22,7 @@ const GameView: React.FC = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        marginTop: "12%",
+        marginTop: "10%",
         boxShadow: "10px 0px 40px rgb(56, 56, 56)",
       }}
     >

@@ -7,11 +7,12 @@ import Register from "../features/game/views/auth/register";
 
 const router = createBrowserRouter([
 
-  { path: "/", element: <PantallaInicio /> },
+  { path: "/", element: <LoginView /> },
+  { path: "/register", element: <Register /> },
+  { path: "/inicio", element: <PantallaInicio /> },
   { path: "/juego", element: <PantallaJuego /> },
   { path: "/resultado", element: <PantallaResultado /> },
-  { path: "/login", element: <LoginView /> },
-  { path: "/register", element: <Register /> },
+
 
 ]);
 

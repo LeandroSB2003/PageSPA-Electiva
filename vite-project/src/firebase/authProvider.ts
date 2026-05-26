@@ -1,5 +1,6 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
-import { auth } from "./config";
+import { auth, db } from "./config";
+import { doc, setDoc } from "firebase/firestore";
 
 export const signin = async (email: string, password:string) : Promise<any> => {
     try {
@@ -20,18 +21,24 @@ export const signin = async (email: string, password:string) : Promise<any> => {
 }
 
 export const register = async (name: string, email: string, password: string, avatarID: string): Promise<any> => {
-    try {
+     try {
     const response = await createUserWithEmailAndPassword(auth, email, password);
-    await updateProfile(response.user, {displayName: name, photoURL: avatarID});
-    
+
+    await updateProfile(response.user, { displayName: name, photoURL: avatarID });
+
+    const userRef = doc(db, "scoringHistory", email);
+    await setDoc(userRef, {
+      Name: name,
+      Wins: 0,
+    });
+
     return {
-    ok: true
-    }
-}
-    catch (error: any) {
-        return{
-            ok: false,
-            errorMessage: error.message,
-        }
+      ok: true,
+    };
+  } catch (error: any) {
+    return {
+      ok: false,
+      errorMessage: error.message,
+    };
 }
 }
