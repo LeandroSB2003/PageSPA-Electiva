@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "@types/node": "^25.9.1"
+  },
+  "dependencies": {
+    "react-scripts": "^5.0.1"
+  }
+}
