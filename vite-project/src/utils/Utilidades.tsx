@@ -17,5 +17,11 @@ export const RevisarGanador = (tablero: EstadoTablero): string | null => {
       return tablero[a];
     }
   }
+
+  // Si todas las casillas están llenas retorna empate
+  if (tablero.every((cell) => cell !== null)) {
+    return "Empate";
+  }
+
   return null;
 };
