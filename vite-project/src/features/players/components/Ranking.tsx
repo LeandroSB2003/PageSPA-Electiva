@@ -56,7 +56,7 @@ export const Ranking: React.FC = () => {
       </ul>
 
       {currentUser && position && (
-        <div style={{ marginTop: "20px", fontWeight: "bold" }}>
+        <div style={{ marginTop: "20px", fontWeight: "bold", color: "white" }}>
           👤 Tu posición: {position}  
           <br />
           {currentUser.Name} — {currentUser.Wins} victorias
