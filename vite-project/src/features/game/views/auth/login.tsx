@@ -56,8 +56,6 @@ const LoginView: React.FC = () => {
       const response = await signin(user, password);
 
       if (response.ok) {
-        console.log("LOGUEADO");
-        console.log(response.photoURL);
 
         navegacion("/inicio");
       } else {
