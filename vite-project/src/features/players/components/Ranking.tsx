@@ -7,6 +7,7 @@ type Player = {
   id: string;
   Name: string;
   Wins: number;
+  photoURL: string;
 };
 
 export const Ranking: React.FC = () => {
@@ -27,6 +28,7 @@ export const Ranking: React.FC = () => {
             id: docSnap.id,
             Name: data.Name,
             Wins: data.Wins,
+            photoURL: data.photoURL,
           };
         });
 
@@ -46,20 +48,24 @@ export const Ranking: React.FC = () => {
 
   return (
     <div>
-      <h2>🏆 Ranking General</h2>
+      <h2>🏆 Ranking </h2>
       <ul>
         {players.map((p, i) => (
           <li key={p.id}>
-            {i + 1}. {p.Name} — {p.Wins} victorias
+            {i + 1}. <img 
+  src={p.photoURL} 
+  alt="avatar" 
+  style={{ width: 40, height: 40, borderRadius: "50%" }} 
+/> {p.Name} — {p.Wins} victorias
           </li>
         ))}
       </ul>
 
       {currentUser && position && (
         <div style={{ marginTop: "20px", fontWeight: "bold", color: "white" }}>
-          👤 Tu posición: {position}  
+          Posición #{position}  
           <br />
-          {currentUser.Name} — {currentUser.Wins} victorias
+           {currentUser.Name} — {currentUser.Wins} victorias
         </div>
       )}
     </div>

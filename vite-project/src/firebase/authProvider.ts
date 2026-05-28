@@ -30,6 +30,7 @@ export const register = async (name: string, email: string, password: string, av
     await setDoc(userRef, {
       Name: name,
       Wins: 0,
+      photoURL: avatarID,
     });
 
     return {
@@ -41,4 +42,14 @@ export const register = async (name: string, email: string, password: string, av
       errorMessage: error.message,
     };
 }
+
+}
+
+export const signOut = async (): Promise<any> => {
+      try {
+        await auth.signOut();
+      } catch (error) {
+        console.error("Error al cerrar sesión:", error);
+      }    
+
 }

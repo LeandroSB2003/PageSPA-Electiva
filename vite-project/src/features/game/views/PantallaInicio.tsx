@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Fondo from "../../../Fondo/Fondo";
 import { EnJuego } from "../../../hooks/EnJuego";
 import "./PantallaInicio.css";
+import { Ranking } from "../../players/components/Ranking";
+import { ButtonSignOut } from "../../players/components/ButtonSignOut";
 
 const PantallaInicio: React.FC = () => {
+  const [showRanking, setShowRanking] = useState(false);
   const navegar = useNavigate();
   const { reiniciar } = EnJuego();
 
@@ -15,6 +18,51 @@ const PantallaInicio: React.FC = () => {
 
   return (
     <div style={{ textAlign: "center", marginTop: "10%" }}>
+     <div style={{
+  position: "fixed",
+  top: "20px",
+  right: "20px",
+  display: "flex",
+  gap: "12px",
+  zIndex: 1100
+}}>
+  <button
+    onClick={() => setShowRanking(!showRanking)}
+    style={{
+      background: "transparent",
+      border: "none",
+      cursor: "pointer",
+      fontSize: "28px",
+      color: "white"
+    }}
+  >
+    🏆
+  </button>
+
+  <ButtonSignOut />
+</div>
+            {showRanking && (
+              <div style={{
+                position: "fixed",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                backgroundColor: "#111",
+                padding: "20px",
+                borderRadius: "12px",
+                boxShadow: "0 0 15px rgba(0,0,0,0.5)",
+                zIndex: 1000,
+                color: "white"
+              }}>
+                <Ranking />
+                <button
+                  onClick={() => setShowRanking(false)}
+                  style={{ marginTop: "10px", padding: "8px 16px" }}
+                >
+                  Cerrar
+                </button>
+              </div>
+            )}
       <h1
         style={{
           color: "white",

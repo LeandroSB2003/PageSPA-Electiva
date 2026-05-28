@@ -1,10 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import avatar1 from "../../../../assets/avatars/avatar_1.png";
-import avatar2 from "../../../../assets/avatars/avatar_2.png";
-import avatar3 from "../../../../assets/avatars/avatar_3.png";
-
 import { register } from "../../../../firebase/authProvider";
 import { useLoginValidation } from "../../../../hooks/ValidateInput";
 
@@ -13,7 +9,10 @@ const Register = () => {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
 
-  const avatars = [avatar1, avatar2, avatar3];
+  const avatars = [
+  "/avatars/avatar_1.png",
+  "/avatars/avatar_2.png",
+  "/avatars/avatar_3.png",];
 
   const [selectedAvatar, setSelectedAvatar] = useState(
     avatars[0]
@@ -69,7 +68,7 @@ const Register = () => {
       console.log("REGISTRO");
       console.log(response);
 
-      navigate("/login");
+      navigate("/");
     } catch (error: any) {
       console.log(error.message);
 
