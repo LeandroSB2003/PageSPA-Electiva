@@ -4,7 +4,7 @@ Proyecto académico desarrollado con **React + Vite** y Firebase para autenticac
 
 ---
 
-## 👥 Integrantes del equipo
+## Integrantes del equipo
 - Nicol Leandro Sanchez Bermudez.  
 - Santiago Bedoya Gómez. 
 
@@ -16,34 +16,49 @@ Proyecto académico desarrollado con **React + Vite** y Firebase para autenticac
    ```bash
    git clone <URL-del-repositorio>
    cd <nombre-del-proyecto>
-Instalar dependencias
+   bash
+   
+## Instalar dependencias
 
-bash
-npm install
+    ```bash
+    npm install
+    ```
+
 Configurar variables de entorno
 
 Crear un archivo .env en la raíz del proyecto.
 
 Copiar las siguientes variables:
-
-env
+.env
+```bash
 REACT_APP_Firebase_ApiKey
+
 REACT_APP_FFirebase_AuthDomain
+
 REACT_APP_Firebase_ProjectId
+
 REACT_APP_Firebase_StorageBucket
+
 REACT_APP_Firebase_MessagingSenderId
+
 REACT_APP_Firebase_AppId
+
 REACT_APP_Firebase_MeasurementId
+```
+
 
 Ejecutar en modo desarrollo
 
-bash
+```bash
 npm run dev
+```
 Compilar para producción
 
-bash
-npm run build
-📦 Tecnologías utilizadas
+```bash
+npm start
+```
+
+## 📦 Tecnologías utilizadas
 React + Vite
 
 Firebase (Auth, Firestore, Storage)
