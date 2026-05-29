@@ -14,8 +14,8 @@ Proyecto académico desarrollado con **React + Vite** y Firebase para autenticac
 
 1. **Clonar el repositorio**
    ```bash
-   git clone <URL-del-repositorio>
-   cd <nombre-del-proyecto>
+   git clone https://github.com/LeandroSB2003/PageSPA-Electiva.git
+   cd PageSPA-Electiva
     ```
    
 ## Instalar dependencias
