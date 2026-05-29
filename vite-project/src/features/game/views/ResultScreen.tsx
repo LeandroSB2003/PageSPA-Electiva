@@ -4,22 +4,23 @@ import Fondo from "../../../Fondo/FondoFinal";
 import "./ResultScreen.css";
 import { auth, db } from "../../../firebase/config";
 import { onAuthStateChanged } from "firebase/auth";
-import { addDoc, collection, doc, increment, updateDoc } from "firebase/firestore";
+import { addDoc, collection, doc, increment, serverTimestamp, updateDoc } from "firebase/firestore";
 import { Ranking } from "../../players/components/Ranking";
 import { ButtonSignOut } from "../../players/components/ButtonSignOut";
 import { useNavigate } from "react-router-dom";
+import ReactLoading from "react-loading";
 
 const ResultScreen: React.FC = () => {
   const [showRanking, setShowRanking] = useState(false);
   const { winner, isDraw, resetGame, playerX, playerO } = useGame();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handlePlayAgain = () => {
     resetGame();
     navigate("/game");
   };
 
-  // Nombre del ganador desde el contexto
   const winnerName = winner === "X" ? playerX : playerO;
 
   useEffect(() => {
@@ -28,11 +29,12 @@ const ResultScreen: React.FC = () => {
         const username = user.email ?? "desconocido";
 
         try {
+          setLoading(true);
           await addDoc(collection(db, "Round"), {
-            DateTime: new Date().toISOString(),
-            Result: isDraw ? "Empate" : "Winner",
-            WinnerID: isDraw ? null : username,
-            WinnerName: isDraw ? null : winnerName,
+            DateTime: serverTimestamp(),
+            Result: winner === "Empate" ? "Empate" : "Winner",
+            WinnerID: winner === "Empate" ? null : username,
+            WinnerName: winner === "Empate" ? null : winnerName,
           });
 
           if (!isDraw && winner) {
@@ -41,6 +43,7 @@ const ResultScreen: React.FC = () => {
               Wins: increment(1),
             });
           }
+          setLoading(false);
         } catch (error) {
           console.error("Error guardando la partida: ", error);
         }
@@ -71,8 +74,14 @@ const ResultScreen: React.FC = () => {
 
       <h1 style={{ color: "white", padding: "10px 20px" }}>Fin de la Partida</h1>
 
-      {/* Mostrar ganador con nombre desde contexto */}
-      {winner && (
+      {loading && (
+  <div style={styles.loadingContainer}>
+    <ReactLoading type="spin" color="#fff" height={20} width={20} />
+  </div>
+)}
+
+
+      {winner && !isDraw && (
         <h2 style={{ color: "#38a169", padding: "10px 20px" }}>
           Ganó el jugador: <span style={{ color: "#f6ff41" }}>{winnerName}</span>
         </h2>
@@ -136,5 +145,11 @@ const styles = {
     fontWeight: "bold" as const,
     cursor: "pointer",
     transition: "transform 0.2s ease, background-color 0.3s ease",
+  },
+  
+loadingContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 };

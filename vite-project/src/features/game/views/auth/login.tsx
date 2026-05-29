@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { signin } from "../../../../firebase/authProvider";
 import { useNavigate } from "react-router-dom";
-
+import ReactLoading from "react-loading";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useLoginValidation } from "../../../../hooks/ValidateInput";
@@ -24,7 +24,7 @@ const LoginView: React.FC = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -53,13 +53,15 @@ const LoginView: React.FC = () => {
     if (!emailValid || !passwordValid) return;
 
     try {
+      setLoading(true)
       const response = await signin(email, password);
 
       if (response.ok) {
+        setLoading(false)
         navigate("/inicio");
       } else {
         const res = response.errorMessage;
-
+        setLoading(false)
         setHasError(true);
 
         setErrorMessage(
@@ -108,9 +110,17 @@ const LoginView: React.FC = () => {
           <p style={styles.error}>{errorMessage}</p>
         )}
 
+{loading && (
+  <div style={styles.loadingContainer}>
+    <ReactLoading type="spin" color="#fff" height={20} width={20} />
+  </div>
+)}
+
+
         <button style={styles.button} onClick={handleLogin}>
           Iniciar Sesion
         </button>
+
 
         <p style={styles.registerText}>
           No estas registrado?{" "}
@@ -193,6 +203,11 @@ const styles: { [key: string]: React.CSSProperties } = {
     color: "#fff",
     cursor: "pointer",
     fontWeight: "bold",
+  },
+  loadingContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 };
 

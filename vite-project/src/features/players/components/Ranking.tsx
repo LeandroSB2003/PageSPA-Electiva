@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { db, auth } from "../../../firebase/config";
-import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
+import { collection, getDocs, query, orderBy } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
 
 type Player = {
@@ -19,7 +19,7 @@ export const Ranking: React.FC = () => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         const scoringRef = collection(db, "scoringHistory");
-        const q = query(scoringRef, orderBy("Wins", "desc"), limit(3));
+        const q = query(scoringRef, orderBy("Wins", "desc"));
         const snapshot = await getDocs(q);
 
         const allPlayers: Player[] = snapshot.docs.map((docSnap) => {
@@ -50,22 +50,29 @@ export const Ranking: React.FC = () => {
     <div>
       <h2>🏆 Ranking </h2>
       <ul>
-        {players.map((p, i) => (
+        {players.slice(0, 3).map((p, i) => (
           <li key={p.id}>
-            {i + 1}. <img 
-  src={p.photoURL} 
-  alt="avatar" 
-  style={{ width: 40, height: 40, borderRadius: "50%" }} 
-/> {p.Name} — {p.Wins} victorias
+            {i + 1}.{" "}
+            <img
+              src={p.photoURL}
+              alt="avatar"
+              style={{ width: 40, height: 40, borderRadius: "50%" }}
+            />{" "}
+            {p.Name} — {p.Wins} victorias
           </li>
         ))}
       </ul>
 
-      {currentUser && position && (
+      {currentUser && position && position > 1 && (
         <div style={{ marginTop: "20px", fontWeight: "bold", color: "white" }}>
-          Posición #{position}  
+          Tu posición: #{position}
           <br />
-           {currentUser.Name} — {currentUser.Wins} victorias
+          <img
+            src={currentUser.photoURL}
+            alt="avatar"
+            style={{ width: 40, height: 40, borderRadius: "50%" }}
+          />{" "}
+          {currentUser.Name} — {currentUser.Wins} victorias
         </div>
       )}
     </div>

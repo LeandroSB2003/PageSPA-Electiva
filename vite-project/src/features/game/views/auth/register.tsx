@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import ReactLoading from "react-loading";
 import { register } from "../../../../firebase/authProvider";
 import { useLoginValidation } from "../../../../hooks/ValidateInput";
 
@@ -16,7 +16,7 @@ const Register = () => {
   ];
 
   const [selectedAvatar, setSelectedAvatar] = useState(avatars[0]);
-
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const {
@@ -54,11 +54,9 @@ const Register = () => {
     if (!emailValid || !passwordValid) return;
 
     try {
+      setLoading(true);
       const response = await register(name, email, password, selectedAvatar);
-
-      console.log("REGISTRO");
-      console.log(response);
-
+      setLoading(false);
       navigate("/");
     } catch (error: any) {
       console.log(error.message);
@@ -146,7 +144,12 @@ const Register = () => {
         <button style={styles.button} onClick={handleRegister}>
           Crear Cuenta
         </button>
-
+        {loading && (
+          <div style={styles.loadingContainer}>
+            <ReactLoading type="spin" color="#fff" height={20} width={20} />
+          </div>
+        )}
+        
         <div style={styles.loginContainer}>
           ¿Ya tienes una cuenta?
           <span
@@ -245,5 +248,11 @@ const styles: { [key: string]: React.CSSProperties } = {
     cursor: "pointer",
     marginLeft: "5px",
     textAlign: "center",
+  },
+
+  loadingContainer: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
 };

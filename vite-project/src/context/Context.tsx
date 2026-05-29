@@ -23,12 +23,13 @@ export const GameContext = createContext<GameContextType | undefined>(
 );
 
 export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  // Estados: tablero, turno, jugadores
   const [board, setBoard] = useState<BoardState>(Array(9).fill(null));
   const [turn, setTurn] = useState<"X" | "O">("X");
-
   const [playerX, setPlayerX] = useState<string>("Player X");
   const [playerO, setPlayerO] = useState<string>("Player O");
 
+  // Detectar usuario logueado y asignarlo como Player X
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -38,18 +39,18 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setPlayerX("Player X");
       }
     });
-
     return () => unsubscribe();
   }, []);
 
-  const winner = checkWinner(board);
-  const isDraw = !winner && board.every((cell) => cell !== null);
+  // Lógica de ganador/empate
+const winner = checkWinner(board);
+const isDraw = winner === "Empate";
+
 
   const currentTurnName = turn === "X" ? playerX : playerO;
 
   const playTurn = (index: number) => {
     if (board[index] || winner) return;
-
     const newBoard = [...board];
     newBoard[index] = turn;
     setBoard(newBoard);

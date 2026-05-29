@@ -4,7 +4,6 @@ import { useGame } from "../../../hooks/useGame";
 import Board from "../../board/components/Board";
 import PlayerStatus from "../../players/components/PlayerStatus";
 import Fondo from "../../../Fondo/FondoJuego";
-import "./GameScreen.css";
 import { ButtonSignOut } from "../../players/components/ButtonSignOut";
 
 const GameScreen: React.FC = () => {
