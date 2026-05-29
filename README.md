@@ -1,4 +1,4 @@
-# 🎮 Tic Tac Toe
+# 🎮 Tres en Raya (Tic Tac Toe)
 
 Proyecto académico desarrollado con **React + Vite** y Firebase para autenticación y almacenamiento de datos.
 
@@ -16,11 +16,11 @@ Proyecto académico desarrollado con **React + Vite** y Firebase para autenticac
    ```bash
    git clone <URL-del-repositorio>
    cd <nombre-del-proyecto>
-   bash
+    ```
    
 ## Instalar dependencias
 
-    ```bash
+     ```bash
     npm install
     ```
 
@@ -49,7 +49,7 @@ REACT_APP_Firebase_MeasurementId
 
 Ejecutar en modo desarrollo
 
-```bash
+```
 npm run dev
 ```
 Compilar para producción
