@@ -6,17 +6,16 @@ import { useLoginValidation } from "../../../../hooks/ValidateInput";
 
 const Register = () => {
   const [name, setName] = useState("");
-  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const avatars = [
-  "/avatars/avatar_1.png",
-  "/avatars/avatar_2.png",
-  "/avatars/avatar_3.png",];
+    "/avatars/avatar_1.png",
+    "/avatars/avatar_2.png",
+    "/avatars/avatar_3.png",
+  ];
 
-  const [selectedAvatar, setSelectedAvatar] = useState(
-    avatars[0]
-  );
+  const [selectedAvatar, setSelectedAvatar] = useState(avatars[0]);
 
   const navigate = useNavigate();
 
@@ -29,8 +28,8 @@ const Register = () => {
     setHasError,
   } = useLoginValidation();
 
-  const handleChangeUser = (text: string) => {
-    setUser(text);
+  const handleChangeEmail = (text: string) => {
+    setEmail(text);
     validateEmail(text);
   };
 
@@ -43,27 +42,19 @@ const Register = () => {
     setHasError(false);
     setErrorMessage("");
 
-    if (!name || !user || !password) {
+    if (!name || !email || !password) {
       setHasError(true);
-      setErrorMessage(
-        "Todos los campos son obligatorios"
-      );
+      setErrorMessage("Todos los campos son obligatorios");
       return;
     }
 
-    const emailValid = validateEmail(user);
-    const passwordValid =
-      validatePassword(password);
+    const emailValid = validateEmail(email);
+    const passwordValid = validatePassword(password);
 
     if (!emailValid || !passwordValid) return;
 
     try {
-      const response = await register(
-        name,
-        user,
-        password,
-        selectedAvatar
-      );
+      const response = await register(name, email, password, selectedAvatar);
 
       console.log("REGISTRO");
       console.log(response);
@@ -87,14 +78,10 @@ const Register = () => {
             type="text"
             placeholder="Nombre"
             value={name}
-            onChange={(e) =>
-              setName(e.target.value)
-            }
+            onChange={(e) => setName(e.target.value)}
             style={{
               ...styles.input,
-              border: hasError
-                ? "1px solid #ff4d4d"
-                : styles.input.border,
+              border: hasError ? "1px solid #ff4d4d" : styles.input.border,
             }}
           />
         </div>
@@ -103,15 +90,11 @@ const Register = () => {
           <input
             type="email"
             placeholder="Correo"
-            value={user}
-            onChange={(e) =>
-              handleChangeUser(e.target.value)
-            }
+            value={email}
+            onChange={(e) => handleChangeEmail(e.target.value)}
             style={{
               ...styles.input,
-              border: hasError
-                ? "1px solid #ff4d4d"
-                : styles.input.border,
+              border: hasError ? "1px solid #ff4d4d" : styles.input.border,
             }}
           />
         </div>
@@ -121,29 +104,17 @@ const Register = () => {
             type="password"
             placeholder="Contraseña"
             value={password}
-            onChange={(e) =>
-              handleChangePassword(
-                e.target.value
-              )
-            }
+            onChange={(e) => handleChangePassword(e.target.value)}
             style={{
               ...styles.input,
-              border: hasError
-                ? "1px solid #ff4d4d"
-                : styles.input.border,
+              border: hasError ? "1px solid #ff4d4d" : styles.input.border,
             }}
           />
         </div>
 
-        {errorMessage && (
-          <p style={styles.errorText}>
-            {errorMessage}
-          </p>
-        )}
+        {errorMessage && <p style={styles.errorText}>{errorMessage}</p>}
 
-        <span style={styles.loginText}>
-          Selecciona tu Avatar
-        </span>
+        <span style={styles.loginText}>Selecciona tu Avatar</span>
 
         <div
           style={{
@@ -157,9 +128,7 @@ const Register = () => {
             <img
               key={index}
               src={img}
-              onClick={() =>
-                setSelectedAvatar(img)
-              }
+              onClick={() => setSelectedAvatar(img)}
               style={{
                 width: 100,
                 height: 100,
@@ -174,10 +143,7 @@ const Register = () => {
           ))}
         </div>
 
-        <button
-          style={styles.button}
-          onClick={handleRegister}
-        >
+        <button style={styles.button} onClick={handleRegister}>
           Crear Cuenta
         </button>
 
@@ -185,9 +151,7 @@ const Register = () => {
           ¿Ya tienes una cuenta?
           <span
             style={styles.loginText}
-            onClick={() =>
-              navigate("/login")
-            }
+            onClick={() => navigate("/")}
           >
             Iniciar sesión
           </span>
@@ -199,9 +163,7 @@ const Register = () => {
 
 export default Register;
 
-const styles: {
-  [key: string]: React.CSSProperties;
-} = {
+const styles: { [key: string]: React.CSSProperties } = {
   container: {
     width: "100%",
     minHeight: "100vh",
@@ -221,8 +183,7 @@ const styles: {
     display: "flex",
     flexDirection: "column",
     gap: "16px",
-    boxShadow:
-      "0 0 25px rgba(255,255,255,0.04)",
+    boxShadow: "0 0 25px rgba(255,255,255,0.04)",
   },
 
   title: {
@@ -236,7 +197,7 @@ const styles: {
   inputContainer: {
     width: "100%",
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "column" as const,
     gap: "6px",
   },
 

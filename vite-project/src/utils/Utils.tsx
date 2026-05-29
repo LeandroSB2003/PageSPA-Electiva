@@ -1,6 +1,6 @@
-export type EstadoTablero = (string | null)[];
+export type BoardState = (string | null)[];
 
-export const RevisarGanador = (tablero: EstadoTablero): string | null => {
+export const checkWinner = (tablero: BoardState): string | null => {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],

@@ -7,7 +7,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useLoginValidation } from "../../../../hooks/ValidateInput";
 
 const LoginView: React.FC = () => {
-  const diccionarioErrores = {
+  const errorDictionary = {
     "Firebase: Error (auth/email-already-in-use).":
       "Este correo electrónico ya está registrado.",
     "Firebase: Error (auth/weak-password).":
@@ -22,10 +22,10 @@ const LoginView: React.FC = () => {
       "El correo o contraseña es incorrecta.",
   };
 
-  const [user, setUser] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const navegacion = useNavigate();
+  const navigate = useNavigate();
 
   const {
     errorMessage,
@@ -36,8 +36,8 @@ const LoginView: React.FC = () => {
     setHasError,
   } = useLoginValidation();
 
-  const handleChangeUser = (text: string) => {
-    setUser(text);
+  const handleChangeEmail = (text: string) => {
+    setEmail(text);
     validateEmail(text);
   };
 
@@ -47,25 +47,24 @@ const LoginView: React.FC = () => {
   };
 
   const handleLogin = async () => {
-    const emailValid = validateEmail(user);
+    const emailValid = validateEmail(email);
     const passwordValid = validatePassword(password);
 
     if (!emailValid || !passwordValid) return;
 
     try {
-      const response = await signin(user, password);
+      const response = await signin(email, password);
 
       if (response.ok) {
-
-        navegacion("/inicio");
+        navigate("/inicio");
       } else {
         const res = response.errorMessage;
 
         setHasError(true);
 
         setErrorMessage(
-          diccionarioErrores[
-            res as keyof typeof diccionarioErrores
+          errorDictionary[
+            res as keyof typeof errorDictionary
           ] || "Algo no parece estar funcionando bien."
         );
       }
@@ -74,20 +73,20 @@ const LoginView: React.FC = () => {
       console.log(error.message);
 
       setHasError(true);
-      setErrorMessage("Ocurrió un error inesperado.");
+      setErrorMessage("Ocurrio un error inesperado.");
     }
   };
 
   return (
     <div style={styles.container}>
       <div style={styles.card}>
-        <h1 style={styles.title}>Login</h1>
+        <h1 style={styles.title}>Iniciar Sesion</h1>
 
         <input
           type="email"
-          placeholder="Correo electrónico"
-          value={user}
-          onChange={(e) => handleChangeUser(e.target.value)}
+          placeholder="Email"
+          value={email}
+          onChange={(e) => handleChangeEmail(e.target.value)}
           style={{
             ...styles.input,
             border: hasError ? "1px solid #ff4d4d" : styles.input.border,
@@ -110,16 +109,16 @@ const LoginView: React.FC = () => {
         )}
 
         <button style={styles.button} onClick={handleLogin}>
-          Iniciar sesión
+          Iniciar Sesion
         </button>
 
         <p style={styles.registerText}>
-          ¿No estás registrado?{" "}
+          No estas registrado?{" "}
           <span
             style={styles.registerLink}
-            onClick={() => navegacion("/register")}
+            onClick={() => navigate("/register")}
           >
-            Haz Click
+            Click Aqui
           </span>
         </p>
       </div>

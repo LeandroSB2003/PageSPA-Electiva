@@ -1,13 +1,13 @@
-import { Proveedor } from "./context/Contexto";
-import { Rutas } from "./routers/Rutas";
+import { GameProvider } from "./context/Context";
+import { Routes } from "./routers/Routes";
 import "./App.css";
 import Fondo from "./Fondo/Fondo";
 
 function App() {
   return (
-    <Proveedor>
-      <Rutas />
-    </Proveedor>
+    <GameProvider>
+      <Routes />
+    </GameProvider>
   );
 }
 

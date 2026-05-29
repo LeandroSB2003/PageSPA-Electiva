@@ -1,11 +1,11 @@
 import React from "react";
 
-interface CuadradoA {
+interface SquareA {
   value: string | null;
   onClick: () => void;
 }
 
-export const Cuadro: React.FC<CuadradoA> = ({ value, onClick }) => {
+export const Square: React.FC<SquareA> = ({ value, onClick }) => {
   return (
     <button
       onClick={onClick}
@@ -24,4 +24,4 @@ export const Cuadro: React.FC<CuadradoA> = ({ value, onClick }) => {
   );
 };
 
-export default Cuadro;
+export default Square;
